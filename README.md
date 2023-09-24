@@ -7,6 +7,7 @@
 ## mmyolo
 https://github.com/open-mmlab/mmyolo
 
-**COCO dataset reduced to 25K samples**
-https://github.com/giddyyupp/coco-minitrain
+TypeError: FormatCode() got an unexpected keyword argument 'verify'
+
+for syntax problem: pip install yapf==0.40.1
 
