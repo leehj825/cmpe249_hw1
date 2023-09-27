@@ -20,8 +20,12 @@ python yolo2coco.py .
 
 ## MMDetection
 https://github.com/open-mmlab/mmdetection
+
 ## Ultralytics
 https://github.com/ultralytics
+
+![image](https://github.com/leehj825/cmpe249_hw1/assets/21224335/534fea02-31ce-410d-9e40-04259adbae8c)
+
 ## Troubleshoot
 TypeError: FormatCode() got an unexpected keyword argument 'verify'
 
