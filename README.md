@@ -22,8 +22,6 @@ This assignment is about learning how to train models to detect 2D objects. We h
     - Code Base: Ultralytics (https://github.com/ultralytics/yolov8)
 
 ## Dataset Preparation
-Waymo dataset in SJSU HPC server (/data/cmpe249-fa23/waymotrain200cocoyolo) with 161,096 image files are copied to a different location and reduced to 1000 images to shorten the training time. The dataset format is initially in YOLO format with label files.
-
 The Waymo dataset in the SJSU HPC server (located at /data/cmpe249-fa23/waymotrain200cocoyolo) contains a total of 161,096 image files. To make the training time shorter, these files are copied to a different location, and the number of images is reduced to just 1000. Initially, the dataset format is in YOLO format, which includes label files. yolo2coc.py python script is used for converting the labels in YOLO format to the annotation files in COCO format.
 
 - `images`: contains image files
