@@ -133,7 +133,7 @@ Optimizer stripped from /home/001891254/cmpe249_hw1/ultralytics/runs/detect/trai
 Optimizer stripped from /home/001891254/cmpe249_hw1/ultralytics/runs/detect/train3/weights/best.pt, 6.2MB
 ```
 ## Result
-![image](https://github.com/leehj825/cmpe249_hw1/assets/21224335/534fea02-31ce-410d-9e40-04259adbae8c)
+
 
 <img width="400" alt="image" src="https://github.com/leehj825/cmpe249_hw1/assets/21224335/6d4c3f9f-3858-447d-a47d-0473a0fb2be1">
 
