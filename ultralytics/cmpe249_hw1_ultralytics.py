@@ -6,7 +6,7 @@ model = YOLO('yolov8n.yaml')
 # Load a pretrained YOLO model (recommended for training)
 #model = YOLO('yolov8n.pt')
 
-# Train the model using the 'coco128.yaml' dataset for 3 epochs
+# Train the model using the 'waymo_coco.yaml' dataset for 10 epochs
 results = model.train(data='waymo_coco.yaml', epochs=10)
 
 # Evaluate the model's performance on the validation set
