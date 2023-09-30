@@ -13,7 +13,7 @@
 - Reference
 
 ## Introduction
-This homework is to explore some training deep learning models for 2D object detection. Two models from different code bases, FCOS from MMDetection and YOLOv8 from Ultralytics, have been chosen for comparison in performance.
+This assignment is about learning how to train models to detect 2D objects. We have selected two different models for this purpose: FCOS from MMDetection and YOLOv8 from Ultralytics. We will compare these two models based on how long they take to train and how precise they are in detecting objects.
 
 ## Models and Code Bases
 - **Model 1**: FCOS (Fully Convolutional One-Stage Object Detection)
@@ -24,16 +24,18 @@ This homework is to explore some training deep learning models for 2D object det
 ## Dataset Preparation
 Waymo dataset in SJSU HPC server (/data/cmpe249-fa23/waymotrain200cocoyolo) with 161,096 image files are copied to a different location and reduced to 1000 images to shorten the training time. The dataset format is initially in YOLO format with label files.
 
+The Waymo dataset in the SJSU HPC server (located at /data/cmpe249-fa23/waymotrain200cocoyolo) contains a total of 161,096 image files. To make the training time shorter, these files are copied to a different location, and the number of images is reduced to just 1000. Initially, the dataset format is in YOLO format, which includes label files. yolo2coc.py python script is used for converting the labels in YOLO format to the annotation files in COCO format.
+
 - `images`: contains image files
 - `labels`: contains label files for **YOLO** format
 - `annotations`: contains annotation json files for **COCO** format.
 
-To convert YOLO format to COCO format:
+### Script to convert to COCO format annotation
 ```
 python yolo2coco.py .
 ```
 ## Training
-**FCOS in MMDetection**
+### FCOS in MMDetection
 
 Based on an existing FCOS config file (fcos_x101-64x4d_fpn_gn-head_ms-640-800-2x_coco.py), I changed the dataset path to 1000 samples of Waymo data converted to COCO format (~/coco_1k) wth annotation files.  Based on the new dataset, the data pipelines and loaders are updated.  
 ```
@@ -78,7 +80,7 @@ Below training process shows the progress of the last epoch #10.  The total trai
 2023/09/27 01:45:02 - mmengine - INFO - Saving checkpoint at 10 epochs
 ```
 
-**YOLOv8 in Ultralytics**
+### YOLOv8 in Ultralytics
 
 Ultralytics documentation provides the example python script to train, validate, and run the model with minimal modification of the config files. The line for loading a pretrained model is commented out to start the training from scratch.  The epoch is set to 10 same as the FCOS model above.
 
@@ -133,6 +135,7 @@ Optimizer stripped from /home/001891254/cmpe249_hw1/ultralytics/runs/detect/trai
 Optimizer stripped from /home/001891254/cmpe249_hw1/ultralytics/runs/detect/train3/weights/best.pt, 6.2MB
 ```
 ## Result
+### Training records
 The trainings from the scratch with 10 epochs, FCOS model shows better metric than YOLOv8.  However considering the trainig time, YOLOv8 is more than 10 times faster than FCOS. 
 Model | Training time (hours)
 --- | ---
@@ -140,7 +143,7 @@ FCOS | 2.75
 YOLOv8 | 0.198 
 <img width="541" alt="image" src="https://github.com/leehj825/cmpe249_hw1/assets/21224335/732b18fc-9552-433d-850d-13dff3f38d55">
 
-### Inference
+### Image Demonstration
 Over-detection is found in both models, by putting multiple bounding boxes around each object. 
 #### FCOS
 
@@ -149,10 +152,15 @@ Over-detection is found in both models, by putting multiple bounding boxes aroun
 #### YOLOv8
 <img width="541" alt="image" src="https://github.com/leehj825/cmpe249_hw1/assets/21224335/61f3a8b3-17f8-45ad-a763-e02fc15b9727">
 
+## Conclusion
+To speed up the training time, the number of training cycles was cut down to just 10 epochs. This change made both FCOS and YOLOv8 models less effective in detecting objects in images. Even so, it was clear from comparing the two models that the FCOS model did better, though it took 10 times longer to train. More tests can be done in the future by increasing the number of training cycles. This change could also help improve the issue of over-detection, making the models more accurate and reliable.
 
+## References
+<a id="1">[1]</a> 
+"MMDetection 3.1.0 Documentation", OpenMMLab, mmdetection.readthedocs.io/en/latest/overview.html. 
 
-## Troubleshoot
-TypeError: FormatCode() got an unexpected keyword argument 'verify'
+<a id="2">[2]</a> 
+“Revolutionizing the World of Vision Ai.” Ultralytics, ultralytics.com/. 
 
-for syntax problem: pip install yapf==0.40.1
-
+<a id="3">[3]</a> 
+Liu, Kaikai. “Welcome to DeepDataMiningLearning Documentation.” DEEPDATAMININGLEARNING 0.1 Documentation, 2023, deepdatamininglearning.readthedocs.io/en/latest/. 
