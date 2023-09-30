@@ -47,8 +47,8 @@ val_data_prefix = 'images/'  # Prefix of val image path
 ```
 The training script is provided under tools folder.
 ```
-> python tools/train.py 
-
+> python tools/train.py fcos_x101-64x4d_fpn_gn-head-1x_waymococo_hj.py
+```
 The number of epochs are reduced to 10 for shorter training time. The new classes are defined based on the Waymo dataset. 
 ```
 max_epochs = 10  # Maximum training epochs
