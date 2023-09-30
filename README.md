@@ -35,7 +35,7 @@ python yolo2coco.py .
 ## Training
 **FCOS in MMDetection**
 
-Based on an existing FCOS config file (fcos_x101-64x4d_fpn_gn-head_ms-640-800-2x_coco.py), I changed the dataset path to 1000 samples of Waymo data converted to COCO format (~/coco_1k) wth annotation files.  Based on the new dataset, the data pipelines and loaders are updated.
+Based on an existing FCOS config file (fcos_x101-64x4d_fpn_gn-head_ms-640-800-2x_coco.py), I changed the dataset path to 1000 samples of Waymo data converted to COCO format (~/coco_1k) wth annotation files.  Based on the new dataset, the data pipelines and loaders are updated.  
 ```
 data_root = '../../coco_1k/'  # Root path of data
 # Path of train annotation file
@@ -45,6 +45,10 @@ train_data_prefix = 'images/'  # Prefix of train image path
 val_ann_file = 'annotations/result.json'
 val_data_prefix = 'images/'  # Prefix of val image path
 ```
+The training script is provided under tools folder.
+```
+> python tools/train.py 
+
 The number of epochs are reduced to 10 for shorter training time. The new classes are defined based on the Waymo dataset. 
 ```
 max_epochs = 10  # Maximum training epochs
@@ -58,7 +62,7 @@ max_keep_ckpts = 3
 
 classes = ('vehicle','pedestrian', 'sign', 'cyclist')
 ```
-Below training process shows the progress of the last epoch #10. 
+Below training process shows the progress of the last epoch #10.  The total training time including the validations between each epoch was about 2.75 hours.
 ```
 2023/09/27 01:33:11 - mmengine - INFO - Epoch(train) [10][ 50/500]  base_lr: 1.0000e-04 lr: 1.0000e-04  eta: 0:11:48  time: 1.5860  data_time: 0.0074  memory: 9232  grad_norm: 2.3275  loss: 0.8868  loss_cls: 0.0740  loss_bbox: 0.2408  loss_centerness: 0.5720
 2023/09/27 01:34:30 - mmengine - INFO - Epoch(train) [10][100/500]  base_lr: 1.0000e-04 lr: 1.0000e-04  eta: 0:10:29  time: 1.5701  data_time: 0.0052  memory: 9232  grad_norm: 2.3272  loss: 0.8759  loss_cls: 0.0651  loss_bbox: 0.2352  loss_centerness: 0.5756
@@ -76,33 +80,57 @@ Below training process shows the progress of the last epoch #10.
 
 **YOLOv8 in Ultralytics**
 
-Ultralytics documentation provides the example python script to train, validate, and run the model with minimal modification of the config files.
+Ultralytics documentation provides the example python script to train, validate, and run the model with minimal modification of the config files. The line for loading a pretrained model is commented out to start the training from scratch.  The epoch is set to 10 same as the FCOS model above.
+
+```
+from ultralytics import YOLO
+
+# Create a new YOLO model from scratch
+model = YOLO('yolov8n.yaml')
+
+# Load a pretrained YOLO model (recommended for training)
+#model = YOLO('yolov8n.pt')
+
+# Train the model using the 'waymo_coco.yaml' dataset for 10 epochs
+results = model.train(data='waymo_coco.yaml', epochs=10)
+
+# Evaluate the model's performance on the validation set
+results = model.val()
+
+# Perform object detection on an image using the model
+results = model('https://ultralytics.com/images/bus.jpg')
+
+# Export the model to ONNX format
+success = model.export(format='onnx')
+```
+Below is the list of parameters and layers used for YOLOv8 algorithm. 
 ```
                    from  n    params  module                                       arguments                     
   0                  -1  1       464  ultralytics.nn.modules.conv.Conv             [3, 16, 3, 2]                 
   1                  -1  1      4672  ultralytics.nn.modules.conv.Conv             [16, 32, 3, 2]                
   2                  -1  1      7360  ultralytics.nn.modules.block.C2f             [32, 32, 1, True]             
-  3                  -1  1     18560  ultralytics.nn.modules.conv.Conv             [32, 64, 3, 2]                
-  4                  -1  2     49664  ultralytics.nn.modules.block.C2f             [64, 64, 2, True]             
-  5                  -1  1     73984  ultralytics.nn.modules.conv.Conv             [64, 128, 3, 2]               
-  6                  -1  2    197632  ultralytics.nn.modules.block.C2f             [128, 128, 2, True]           
-  7                  -1  1    295424  ultralytics.nn.modules.conv.Conv             [128, 256, 3, 2]              
-  8                  -1  1    460288  ultralytics.nn.modules.block.C2f             [256, 256, 1, True]           
-  9                  -1  1    164608  ultralytics.nn.modules.block.SPPF            [256, 256, 5]                 
- 10                  -1  1         0  torch.nn.modules.upsampling.Upsample         [None, 2, 'nearest']          
- 11             [-1, 6]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
- 12                  -1  1    148224  ultralytics.nn.modules.block.C2f             [384, 128, 1]                 
- 13                  -1  1         0  torch.nn.modules.upsampling.Upsample         [None, 2, 'nearest']          
- 14             [-1, 4]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
- 15                  -1  1     37248  ultralytics.nn.modules.block.C2f             [192, 64, 1]                  
- 16                  -1  1     36992  ultralytics.nn.modules.conv.Conv             [64, 64, 3, 2]                
- 17            [-1, 12]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
- 18                  -1  1    123648  ultralytics.nn.modules.block.C2f             [192, 128, 1]                 
- 19                  -1  1    147712  ultralytics.nn.modules.conv.Conv             [128, 128, 3, 2]              
+:                          
+:          
  20             [-1, 9]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
  21                  -1  1    493056  ultralytics.nn.modules.block.C2f             [384, 256, 1]                 
  22        [15, 18, 21]  1    752092  ultralytics.nn.modules.head.Detect           [4, [64, 128, 256]]           
 YOLOv8n summary: 225 layers, 3011628 parameters, 3011612 gradients
+```
+The training time is about **0.2 hour** much shorter than FCOS model.
+```
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+       9/10     0.692G     0.7905     0.6145     0.9118         60        640: 100%|██████████| 250/250
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|████████
+                   all       1000       7887      0.932      0.812      0.863      0.615
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+      10/10     0.673G     0.7793     0.5869     0.9004         36        640: 100%|██████████| 250/250
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|████████
+                   all       1000       7887      0.924      0.814      0.867      0.649
+
+10 epochs completed in 0.198 hours.
+Optimizer stripped from /home/001891254/cmpe249_hw1/ultralytics/runs/detect/train3/weights/last.pt, 6.2MB
+Optimizer stripped from /home/001891254/cmpe249_hw1/ultralytics/runs/detect/train3/weights/best.pt, 6.2MB
 ```
 ## Result
 ![image](https://github.com/leehj825/cmpe249_hw1/assets/21224335/534fea02-31ce-410d-9e40-04259adbae8c)
