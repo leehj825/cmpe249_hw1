@@ -133,9 +133,22 @@ Optimizer stripped from /home/001891254/cmpe249_hw1/ultralytics/runs/detect/trai
 Optimizer stripped from /home/001891254/cmpe249_hw1/ultralytics/runs/detect/train3/weights/best.pt, 6.2MB
 ```
 ## Result
+The trainings from the scratch with 10 epochs, FCOS model shows better metric than YOLOv8.  However considering the trainig time, YOLOv8 is more than 10 times faster than FCOS. 
+Model | Training time (hours)
+--- | ---
+FCOS | 2.75
+YOLOv8 | 0.198 
+<img width="541" alt="image" src="https://github.com/leehj825/cmpe249_hw1/assets/21224335/732b18fc-9552-433d-850d-13dff3f38d55">
 
+### Inference
+Over-detection is found in both models, by putting multiple bounding boxes around each object. 
+#### FCOS
 
-<img width="400" alt="image" src="https://github.com/leehj825/cmpe249_hw1/assets/21224335/6d4c3f9f-3858-447d-a47d-0473a0fb2be1">
+<img width="541" alt="image" src="https://github.com/leehj825/cmpe249_hw1/assets/21224335/8a306dc8-6272-48f0-8bd9-3633c744b141">
+
+#### YOLOv8
+<img width="541" alt="image" src="https://github.com/leehj825/cmpe249_hw1/assets/21224335/61f3a8b3-17f8-45ad-a763-e02fc15b9727">
+
 
 
 ## Troubleshoot
