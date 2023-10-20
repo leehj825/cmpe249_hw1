@@ -147,6 +147,10 @@ Over-detection is found in both models, by putting multiple bounding boxes aroun
 
 <img width="541" alt="image" src="https://github.com/leehj825/cmpe249_hw1/assets/21224335/8a306dc8-6272-48f0-8bd9-3633c744b141">
 
+##### After checking threshold 0.5 to each bounding box score
+<img width="541" alt="image" src="https://github.com/leehj825/cmpe249_hw1/assets/21224335/1dcc58fd-0e8e-4967-b302-ad01c277d3d4">
+
+
 #### YOLOv8
 <img width="541" alt="image" src="https://github.com/leehj825/cmpe249_hw1/assets/21224335/61f3a8b3-17f8-45ad-a763-e02fc15b9727">
 
