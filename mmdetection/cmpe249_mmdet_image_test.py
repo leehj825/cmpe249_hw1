@@ -14,11 +14,17 @@ model = init_detector(config_file, checkpoint_file, device='cpu')
 img_path = '000005.jpg'
 result = inference_detector(model, img_path)
 
-# Access the predicted instances, bounding boxes and labels
+# Access the predicted instances, bounding boxes, labels, and scores
 pred_instances = result.pred_instances
 bboxes = pred_instances.bboxes.cpu().numpy()
 labels = pred_instances.labels.cpu().numpy()
+scores = pred_instances.scores.cpu().numpy()  # Extracting scores
 
+# Filter out bounding boxes, labels, and scores where scores are below 0.5
+filter_indices = scores > 0.5
+bboxes = bboxes[filter_indices]
+labels = labels[filter_indices]
+print(pred_instances)
 # Visualize the result on the image
 out_img = mmcv.imshow_det_bboxes(
     img_path,
